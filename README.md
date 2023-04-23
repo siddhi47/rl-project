@@ -60,7 +60,7 @@ Project Organization
 
 ```
 docker build docker -t rl
-docker run --gpus all -it -p 8888:8888 rl 
+docker run --gpus all -it -v $(pwd):/src -p 8888:8888 rl 
 ```
 
 <p><small>Project based on the <a target="_blank" href="https://drivendata.github.io/cookiecutter-data-science/">cookiecutter data science project template</a>. #cookiecutterdatascience</small></p>
