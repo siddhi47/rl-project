@@ -16,6 +16,9 @@ Project Organization
     │   └── raw            <- The original, immutable data dump.
     │
     ├── docs               <- A default Sphinx project; see sphinx-doc.org for details
+    | 
+    ├── docker             <- dockerfile environment 
+    |
     │
     ├── models             <- Trained and serialized models, model predictions, or model summaries
     │
@@ -53,5 +56,11 @@ Project Organization
 
 
 --------
+# Setup using docker
+
+```
+docker build docker -t rl
+docker run --gpus all -it -p 8888:8888 rl 
+```
 
 <p><small>Project based on the <a target="_blank" href="https://drivendata.github.io/cookiecutter-data-science/">cookiecutter data science project template</a>. #cookiecutterdatascience</small></p>

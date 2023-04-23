@@ -1,7 +1,9 @@
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
-
+notebooks/datasets
+notebooks/results
+notebooks/tensorboard_log
 # C extensions
 *.so
 
