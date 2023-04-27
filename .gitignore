@@ -1,3 +1,7 @@
+*.csv
+*.png
+notebooks/single_stock_trading_2_tensorboard/
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
