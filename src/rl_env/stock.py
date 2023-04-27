@@ -21,15 +21,16 @@ class SingleStockEnv(gym.Env):
     """A stock trading environment for OpenAI gym"""
     metadata = {'render.modes': ['human']}
 
-    def __init__(self, df,day = 0):
+    def __init__(self, df,day = 0, feat_list = ['adjcp']):
         #super(StockEnv, self).__init__()
         # date increment
+        self.feat_list = feat_list
         self.day = day
         self.df = df
         # action_space normalization and the shape is STOCK_DIM
         self.action_space = spaces.Box(low = -1, high = 1,shape = (STOCK_DIM,)) 
-        # Shape = 4: [Current Balance]+[prices]+[owned shares] +[macd] 
-        self.observation_space = spaces.Box(low=0, high=np.inf, shape = (4,))
+        # Shape = 1+1+len(features) 
+        self.observation_space = spaces.Box(low=0, high=np.inf, shape = (1+1+1+len(self.feat_list),))
         # load data from a pandas dataframe
         self.data = self.df.loc[self.day,:]
         # termination
@@ -38,9 +39,9 @@ class SingleStockEnv(gym.Env):
         self.trades = 0
         # initalize state
         self.state = [INITIAL_ACCOUNT_BALANCE] + \
-                      [self.data.adjcp] + \
+                    [self.data.adjcp] + \
                       [0]*STOCK_DIM + \
-                      [self.data.macd] 
+                      [self.data[feat] for feat in self.feat_list]
         # initialize reward and cost
         self.reward = 0
         self.cost = 0
@@ -136,7 +137,7 @@ class SingleStockEnv(gym.Env):
             self.state =  [self.state[0]] + \
                           [self.data.adjcp] + \
                           list(self.state[(STOCK_DIM+1):(STOCK_DIM*2+1)]) +\
-                          [self.data.macd]
+                          [self.data[feat] for feat in self.feat_list]
                         
             # calculate the end total asset
             end_total_asset = self.state[0]+ \
@@ -159,8 +160,8 @@ class SingleStockEnv(gym.Env):
         #initiate state
         self.state = [INITIAL_ACCOUNT_BALANCE] + \
                       [self.data.adjcp] + \
-                      [0]*STOCK_DIM + \
-                      [self.data.macd]
+                      [0]*STOCK_DIM + [self.data[feat] for feat in self.feat_list]
+       
         return self.state
     
     def render(self, mode='human'):

@@ -1,7 +1,7 @@
 *.csv
 *.png
 notebooks/single_stock_trading_2_tensorboard/
-
+notebooks/trained_models/PPO_10k_126.zip
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]

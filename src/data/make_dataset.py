@@ -1,30 +1,42 @@
-# -*- coding: utf-8 -*-
-import click
-import logging
-from pathlib import Path
-from dotenv import find_dotenv, load_dotenv
+import yfinance as yf
 
 
-@click.command()
-@click.argument('input_filepath', type=click.Path(exists=True))
-@click.argument('output_filepath', type=click.Path())
-def main(input_filepath, output_filepath):
-    """ Runs data processing scripts to turn raw data from (../raw) into
-        cleaned data ready to be analyzed (saved in ../processed).
+#todos: pratyush either download or load from somewhere
+def download_crypto_data(crypto_name, start_date, end_date):
     """
-    logger = logging.getLogger(__name__)
-    logger.info('making final data set from raw data')
+    Download crypto data from Yahoo Finance
+    :param crypto_name: (str) Name of the crypto
+    :param start_date: (str) Start date of the data
+    :param end_date: (str) End date of the data
+    :return: (dataframe) Dataframe of the crypto data
+    """
+    pass
 
 
-if __name__ == '__main__':
-    log_fmt = '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
-    logging.basicConfig(level=logging.INFO, format=log_fmt)
+def download_stock_data(stock_name,start_date,end_date):
+    """
+    Download stock data from Yahoo Finance
+    :param stock_name: (str) Name of the stock
+    :param start_date: (str) Start date of the data
+    :param end_date: (str) End date of the data
+    :return: (dataframe) Dataframe of the stock data
+    """
+    data = yf.download(stock_name, start=start_date, end=end_date)
+    data = data.reset_index()
+    data.columns = ['date', 'open', 'high', 'low', 'close', 'adjcp', 'volume']
 
-    # not used in this stub but often useful for finding various files
-    project_dir = Path(__file__).resolve().parents[2]
+    return data
 
-    # find .env automagically by walking up directories until it's found, then
-    # load up the .env entries as environment variables
-    load_dotenv(find_dotenv())
+def calc_macd(data):
+    """
+    Calculate MACD from the dataframe
+    :param data: (dataframe) Dataframe containing the stock data
+    :return: (dataframe) Dataframe containing MACD
+    """
+    return data    
+    
 
-    main()
+#todos: pratyush
+def calculate_indicators(data_df, indicator_list):
+    pass
+
