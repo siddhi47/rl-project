@@ -21,7 +21,7 @@ class SingleStockEnv(gym.Env):
     """A stock trading environment for OpenAI gym"""
     metadata = {'render.modes': ['human']}
 
-    def __init__(self, df,day = 0, feat_list = ['adjcp']):
+    def __init__(self, df,day = 0, feat_list = []):
         #super(StockEnv, self).__init__()
         # date increment
         self.feat_list = feat_list
@@ -38,6 +38,7 @@ class SingleStockEnv(gym.Env):
         # save the total number of trades
         self.trades = 0
         # initalize state
+        
         self.state = [INITIAL_ACCOUNT_BALANCE] + \
                     [self.data.adjcp] + \
                       [0]*STOCK_DIM + \
