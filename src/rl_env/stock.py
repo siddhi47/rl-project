@@ -29,7 +29,7 @@ class SingleStockEnv(gym.Env):
         self.df = df
         # action_space normalization and the shape is STOCK_DIM
         self.action_space = spaces.Box(low = -1, high = 1,shape = (STOCK_DIM,)) 
-        # Shape = 1+1+len(features) 
+        # Shape = 1(balance)+1(price)+1(stock_dim)+len(features) 
         self.observation_space = spaces.Box(low=0, high=np.inf, shape = (1+1+1+len(self.feat_list),))
         # load data from a pandas dataframe
         self.data = self.df.loc[self.day,:]
@@ -50,6 +50,7 @@ class SingleStockEnv(gym.Env):
         # memorize the total value, total rewards
         self.asset_memory = [INITIAL_ACCOUNT_BALANCE]
         self.rewards_memory = []
+        self._seed = 42
 
     def _sell_stock(self, index, action):
         # perform sell action based on the sign of the action
