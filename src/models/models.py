@@ -27,6 +27,8 @@ class RLModels:
             model = A2C('MlpPolicy', env)
         elif model_name == "ddpg":
             model = DDPG('MlpPolicy', env)
+            
+        
         else:
             raise ValueError("Invalid model_name")
         return model

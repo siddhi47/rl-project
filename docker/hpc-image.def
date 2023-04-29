@@ -1,0 +1,19 @@
+BootStrap: docker
+
+From: stablebaselines/rl-baselines3-zoo
+
+%files
+        requirements.txt
+
+ 
+
+%post
+        conda create -n py39 python=3.9 -y
+        /opt/conda/envs/py39/bin/python -m pip install -r requirements.txt -I
+        /opt/conda/envs/py39/bin/python -m  pip install psutil==5.9.0
+        /opt/conda/envs/py39/bin/python -m pip install jupyterlab
+        /opt/conda/envs/py39/bin/python -m pip install ipykernel
+        /opt/conda/envs/py39/bin/python -m ipykernel install --name=py39
+        /opt/conda/envs/py39/bin/python -m pip install git+https://github.com/AI4Finance-Foundation/FinRL.git
+
+
