@@ -9,7 +9,7 @@ import matplotlib.pyplot as plt
 
 # Global variables
 HMAX_NORMALIZE = 200
-INITIAL_ACCOUNT_BALANCE=100000
+# INITIAL_ACCOUNT_BALANCE=100000
 STOCK_DIM = 1
 
 # transaction fee: 1/1000 reasonable percentage
@@ -21,10 +21,11 @@ class SingleStockEnv(gym.Env):
     """A stock trading environment for OpenAI gym"""
     metadata = {'render.modes': ['human']}
 
-    def __init__(self, df,day = 0, feat_list = []):
+    def __init__(self, df,day = 0, balance = 100000, feat_list = []):
         #super(StockEnv, self).__init__()
         # date increment
         self.feat_list = feat_list
+        self.INITIAL_ACCOUNT_BALANCE = balance
         self.day = day
         self.df = df
         # action_space normalization and the shape is STOCK_DIM
@@ -39,7 +40,7 @@ class SingleStockEnv(gym.Env):
         self.trades = 0
         # initalize state
         
-        self.state = [INITIAL_ACCOUNT_BALANCE] + \
+        self.state = [self.INITIAL_ACCOUNT_BALANCE] + \
                     [self.data.adjcp] + \
                       [0]*STOCK_DIM + \
                       [self.data[feat] for feat in self.feat_list]
@@ -48,7 +49,7 @@ class SingleStockEnv(gym.Env):
         self.cost = 0
         
         # memorize the total value, total rewards
-        self.asset_memory = [INITIAL_ACCOUNT_BALANCE]
+        self.asset_memory = [self.INITIAL_ACCOUNT_BALANCE]
         self.rewards_memory = []
         self._seed = 42
 
@@ -96,7 +97,7 @@ class SingleStockEnv(gym.Env):
             
             df_total_value = pd.DataFrame(self.asset_memory)
             df_total_value.to_csv('account_value.csv')
-            print("total_reward:{}".format(self.state[0]+sum(np.array(self.state[1:(STOCK_DIM+1)])*np.array(self.state[(STOCK_DIM+1):(STOCK_DIM*2+1)]))- INITIAL_ACCOUNT_BALANCE ))
+            print("total_reward:{}".format(self.state[0]+sum(np.array(self.state[1:(STOCK_DIM+1)])*np.array(self.state[(STOCK_DIM+1):(STOCK_DIM*2+1)]))- self.INITIAL_ACCOUNT_BALANCE ))
             print("total_cost: ", self.cost)
             print("total trades: ", self.trades)
             
@@ -152,7 +153,7 @@ class SingleStockEnv(gym.Env):
         return self.state, self.reward, self.terminal, {}
 
     def reset(self):
-        self.asset_memory = [INITIAL_ACCOUNT_BALANCE]
+        self.asset_memory = [self.INITIAL_ACCOUNT_BALANCE]
         self.day = 0
         self.data = self.df.loc[self.day,:]
         self.cost = 0
@@ -160,7 +161,7 @@ class SingleStockEnv(gym.Env):
         self.terminal = False 
         self.rewards_memory = []
         #initiate state
-        self.state = [INITIAL_ACCOUNT_BALANCE] + \
+        self.state = [self.INITIAL_ACCOUNT_BALANCE] + \
                       [self.data.adjcp] + \
                       [0]*STOCK_DIM + [self.data[feat] for feat in self.feat_list]
        
