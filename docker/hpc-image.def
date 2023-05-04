@@ -16,4 +16,5 @@ From: stablebaselines/rl-baselines3-zoo
         /opt/conda/envs/py39/bin/python -m ipykernel install --name=py39
         /opt/conda/envs/py39/bin/python -m pip install git+https://github.com/AI4Finance-Foundation/FinRL.git
 
-
+%runscript
+    exec /opt/conda/envs/py39/bin/python -m jupyter lab --port=8888 --no-browser -ip=0.0.0.0 
